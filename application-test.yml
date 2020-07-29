@@ -1,0 +1,21 @@
+
+
+rocketmq:
+  consumer:
+    consumerGroup: visitor-group
+    groupName: defaultVisitor
+    consumeThreadMin: 20
+    consumeThreadMax: 64
+    consumeMessageBatchMaxSize: 1024  #batch条数
+    namesrvAddr: 192.168.188.26:9876     # 多个时，以;隔开
+  producer:
+    producerGroup: visitor-group
+    groupName: defaultVisitor
+    retryTimesWhenSendFailed: 2
+    sendMsgTimeout: 10000
+    namesrvAddr: 192.168.188.26:9876
+    maxMessageSize: 4096    #消息大小
+  topics:
+    topic:
+      name: visitorErrorTopic
+      tags: visitorErrorTag

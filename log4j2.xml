@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <!--自定义一些常量，之后使用${变量名}引用-->
+        <Property name="log.level.console">info</Property>
+        <Property name="log.level.logger">warn</Property>
+        <Property name="log.path">logs</Property>
+        <Property name="project.name">oa-backend</Property>
+        <Property name="log.pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID:-} [%15.15t] %-30.30C{1.} : %m%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="${log.pattern}"/>
+        </Console>
+        <RollingFile name="ROLLING_FILE" fileName="${log.path}/${project.name}.log"
+                                 filePattern="${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz">
+
+            <!--  ACCEPT（接受）、DENY（拒绝）、NEUTRAL（中立) -->
+            <!--  onMatch >= level  onMatch指的是日志级别大于等于level时的操作 -->
+            <!--  onMismatch < level onMismatch表示日志级别小于level时的操作 -->
+            <!--  通过添加两组 ThresholdFilter 可以达到一个级别的log 对应一个文件的目的-->
+            <PatternLayout pattern="${log.pattern}"/>
+            <Filters>
+                <!-- 这里设置只接收info级别的信息 共有8个级别，按照从低到高为：ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF。-->
+                <ThresholdFilter level="all" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+
+            <!-- Policies: 日志滚动策略-->
+            <Policies>
+                <!--
+                     TimeBasedTriggeringPolicy: 时间滚动策略，默认0点小时产生新的文件，interval="6": 自定义文件滚动时间间隔，
+                     每隔6小时产生新文件, modulate="true": 产生文件是否以0点偏移时间，即6点、12点、18点、0点
+                 -->
+                <OnStartupTriggeringPolicy />
+                <!-- SizeBasedTriggeringPolicy :文件大小滚动策略-->
+                <SizeBasedTriggeringPolicy size="60MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了100 -->
+            <DefaultRolloverStrategy max="100"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.cowain.base" level="debug" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ROLLING_FILE"/>
+        </Logger>
+
+        <Logger name="org.slf4j" level="TRACE" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ROLLING_FILE"/>
+        </Logger>
+
+       <!-- rocketmq RocketmqClient日志关了-->
+        <Logger name="RocketmqClient" level="ERROR"/>
+
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ROLLING_FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>
