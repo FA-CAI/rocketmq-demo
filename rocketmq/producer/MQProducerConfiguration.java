@@ -42,6 +42,9 @@ public class MQProducerConfiguration {
      */
     @Bean
     public DefaultMQProducer getRocketMQProducer() throws MQClientException {
+		 //屏蔽mq的日志配置
+        System.setProperty("rocketmq.client.log.loadconfig","false");
+		
         if (StringUtils.isEmpty(this.groupName)) {
             throw new MQClientException(10001,"groupName is null") ;
         }

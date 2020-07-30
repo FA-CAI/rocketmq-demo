@@ -33,6 +33,9 @@ public class MQConsumerConfiguration {
 
     @Bean
     public DefaultMQPushConsumer getRocketMQConsumer() throws MQClientException {
+		 //屏蔽mq的日志配置
+        System.setProperty("rocketmq.client.log.loadconfig","false");
+		
         if (StringUtils.isEmpty(groupName)) {
             throw new MQClientException(10001, "custom groupName is null");
         }
