@@ -101,6 +101,7 @@ public class ProducerService {
      */
     @PreDestroy
     public void shutDownProducer() {
+          LOGGER.info("producerService正在被容器删除");
         if (producer != null) {
             producer.shutdown();
         }
