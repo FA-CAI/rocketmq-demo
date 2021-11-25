@@ -57,9 +57,13 @@ public class MQConsumerConfiguration {
         consumer.setMessageModel(MessageModel.CLUSTERING);
         //批量消费。默认是1
         //consumer.setConsumeMessageBatchMaxSize(consumeMessageBatchMaxSize);
-        //默认了————“访客报错信息”专用mq
-        // 设置该消费者订阅的主题和tag，如果是订阅该主题下的所有tag，则tag使用*；如果需要指定订阅该主题下的某些tag，则使用||分割，例如tag1||tag2||tag3
-        consumer.subscribe(topicName, "*");
+           //默认了————“访客报错信息”专用mq
+        //设置该消费者订阅的主题和tag，如果是订阅该主题下的所有tag，则tag使用*；如果需要指定订阅该主题下的某些tag，则使用||分割，例如tag1||tag2||tag3
+        // 订阅多个主题
+        // consumer.subscribe(topicName, "*");
+        // consumer.subscribe(topicName+";"+"test-ks-hik-server-face", "*");
+        consumer.subscribe("visitorErrorTestTopic", "*");
+        consumer.subscribe("test-ks-hik-server-face", "*");
         try {
             consumer.start();
             LOGGER.info("consumer  start 正常， groupName:{},topics:{},namesrvAddr:{}", groupName, topicName, namesrvAddr);
