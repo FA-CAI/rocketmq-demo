@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
 
+//2021年11月25日以后可是试试注解的方式@RocketMQmanagerListener  ?
 @Component
 public class MQConsumeMsgListenerConcurrently implements MessageListenerConcurrently {
     private static final Logger logger = LoggerFactory.getLogger(MQConsumeMsgListenerConcurrently.class);
